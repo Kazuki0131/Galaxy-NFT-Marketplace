@@ -1,14 +1,14 @@
 pragma solidity ^0.5.0;
 
-import "./ArtBuxMintable.sol";
+import "./GalaxyCoinMintable.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/crowdsale/Crowdsale.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/crowdsale/emission/MintedCrowdsale.sol";
 
-contract ArtBuxCoinCrowdsale is Crowdsale, MintedCrowdsale {
+contract GalaxyCoinCrowdsale is Crowdsale, MintedCrowdsale {
     constructor(
         uint rate,
         address payable wallet,
-        ArtBuxCoin token
+        GalaxyCoin token
     )
         Crowdsale(rate, wallet, token)
         public
@@ -17,9 +17,9 @@ contract ArtBuxCoinCrowdsale is Crowdsale, MintedCrowdsale {
     }
 }
 
-contract ArtBuxCoinCrowdsaleDeployer {
-    address public artbuxcoin_address;
-    address public artbuxcoin_crowdsale_address;
+contract GalaxyCoinCrowdsaleDeployer {
+    address public galaxycoin_address;
+    address public galaxycoin_crowdsale_address;
 
     constructor(
         string memory name,
@@ -28,13 +28,13 @@ contract ArtBuxCoinCrowdsaleDeployer {
     )
         public
     {
-        ArtBuxCoin token = new ArtBuxCoin(name, symbol, 0);
-        artbuxcoin_address = address(token);
+        GalaxyCoin token = new GalaxyCoin(name, symbol);
+        galaxycoin_address = address(token);
 
-        ArtBuxCoinCrowdsale artbuxcoin_crowdsale = new ArtBuxCoinCrowdsale(1, wallet, token);
-        artbuxcoin_crowdsale_address = address(arcade_crowdsale);
+        GalaxyCoinCrowdsale galaxycoin_crowdsale = new GalaxyCoinCrowdsale(1, wallet, token);
+        galaxycoin_crowdsale_address = address(galaxycoin_crowdsale);
 
-        token.addMinter(artbuxcoin_crowdsale_address);
+        token.addMinter(galaxycoin_crowdsale_address);
         token.renounceMinter();
     }
 }
