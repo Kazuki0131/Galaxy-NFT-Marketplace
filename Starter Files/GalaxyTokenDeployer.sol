@@ -34,4 +34,3 @@ contract GalaxyTokenCrowdsaleDeployer {
         token.renounceMinter();
     }
 }
-

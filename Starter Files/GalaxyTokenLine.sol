@@ -2,8 +2,8 @@ pragma solidity ^0.5.0;
 
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/token/ERC721/ERC721Full.sol";
 
-contract ArtToken is ERC721Full {
-    constructor() public ERC721Full("ArtToken", "ART") {}
+contract GalaxyTokenLine is ERC721Full {
+    constructor(string memory name, string memory symbol) public ERC721Full(name, symbol) {}
 
     function registerArtwork(address owner, string memory tokenURI)
         public
@@ -16,3 +16,4 @@ contract ArtToken is ERC721Full {
         return tokenId;
     }
 }
+
