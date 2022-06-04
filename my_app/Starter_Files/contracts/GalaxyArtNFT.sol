@@ -28,7 +28,7 @@ contract GalaxyArtNFT is ERC721URIStorage {
     }
 }
 
-contract GalaxyArtMarket{
+contract GalaxyArtMarket {
     using Counters for Counters.Counter;
     Counters.Counter private _itemIds;
     Counters.Counter private _itemsSold;
@@ -55,7 +55,7 @@ contract GalaxyArtMarket{
         return idToMarketItem[marketItemId];
     }
 
-    function addMarketItem(address nftContract, uint256 tokenId, uint256 price) public {
+    function addMarketItem(address owner, address nftContract, uint256 tokenId, uint256 price) public {
         require(price > 0, "Price must be biger than 0 GXC");
         _itemIds.increment();
         uint256 itemId = _itemIds.current();

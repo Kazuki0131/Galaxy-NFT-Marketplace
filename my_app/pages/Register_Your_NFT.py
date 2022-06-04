@@ -52,16 +52,6 @@ contract_2 = load_contract(abi_file_list[1],contract_address_list[1])
 
 
 
-# Create a page dropdown 
-#page = st.selectbox("Choose your page", ["Register an NFT", "Sell an NFT", "Buy an NFT"]) 
-#if page == "Register an NFT":
-    # Display details of page 1
-#elif page == "Sell an NFT":
-    # Display details of page 2
-#elif page == "Buy an NFT":
-    # Display details of page 3
-
-
 ################################################################################
 # Register New Artwork
 ################################################################################
@@ -73,6 +63,7 @@ if st.button("Register Artwork"):
     receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     st.write("Transaction receipt mined:")
     st.write(dict(receipt))
+
 st.markdown("---")
 
 token_id = st.text_input("What's your token ID?")
