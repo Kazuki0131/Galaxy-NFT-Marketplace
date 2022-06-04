@@ -10,8 +10,12 @@ def page2():
     st.sidebar.markdown("# Register Your NFT")
 
 def page3():
-    st.markdown("# Sell Your NFT ")
+    st.markdown("# Sell Your NFT")
     st.sidebar.markdown("# Sell Your NFT")
+
+def page4():
+    st.markdown("# Buy An NFT")
+    st.sidebar.markdown("# Buy An NFT")
 
 st.markdown("# Home")
 st.sidebar.markdown("# Home")
