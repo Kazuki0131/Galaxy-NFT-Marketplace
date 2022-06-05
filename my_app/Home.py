@@ -23,7 +23,7 @@ st.sidebar.markdown("# Home")
 st.title("Galaxy NFT Marketplace")
 
 from PIL import Image
-image = Image.open('./pages/galaxy.jpeg')
+image = Image.open('./Images/galaxy.jpeg')
 
 st.image(image, caption='Galaxy NFT Marketplace')
 
