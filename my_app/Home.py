@@ -20,11 +20,13 @@ def page4():
 st.markdown("# Home")
 st.sidebar.markdown("# Home")
 
-#page_names_to_funcs = {
-    #"Home": main_page,
-    #"Register Your NFT": page2,
-    #"Sell Your NFT": page3,
-#}
+st.title("Galaxy NFT Marketplace")
 
-#selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
-#page_names_to_funcs[selected_page]()
+from PIL import Image
+image = Image.open('./pages/galaxy.jpeg')
+
+st.image(image, caption='Galaxy NFT Marketplace')
+
+st.markdown("# Welcome to Galaxy NFT Marketplace, your one-stop shop for all of your non-fungible token needs!")
+
+st.markdown("### Galaxy NFT Marketplace aims to make the entire NFT process simple and fun! From the beginning minting process, to listing and selling your NFT, and also exploring the marketplace and buying other popular NFTs, Galaxy NFT Marketplace is your one-stop shop!")
