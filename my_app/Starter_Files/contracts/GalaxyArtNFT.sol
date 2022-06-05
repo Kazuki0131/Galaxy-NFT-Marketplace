@@ -52,11 +52,14 @@ contract GalaxyArtMarket {
     mapping(uint256 => MarketItem) private idToMarketItem;
 
     function getMarketItem(uint256 marketItemId) public view returns (MarketItem memory) {
+    //function getMarketItem(uint256 marketItemId) public view returns (uint256) {
         return idToMarketItem[marketItemId];
+        //return idToMarketItem[marketItemId].price;
     }
 
+    //function addMarketItem(address nftContract, uint256 tokenId, uint256 price, address _sender) public {
     function addMarketItem(address nftContract, uint256 tokenId, uint256 price) public {
-        require(price > 0, "Price must be biger than 0 GXC");
+        require(price > 0, "Price must be biger than 0");
         _itemIds.increment();
         uint256 itemId = _itemIds.current();
   
@@ -66,12 +69,13 @@ contract GalaxyArtMarket {
             tokenId,
             payable(address(0)),
             payable(msg.sender),
+            //payable(_sender),
             price,
-            false
+            false,
         );
 
     IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
-
+    //IERC721(nftContract).transferFrom(_sender, address(this), tokenId);
     }
 
     function createMarketSale(address nftContract, uint256 itemId) public payable{
@@ -85,5 +89,49 @@ contract GalaxyArtMarket {
         idToMarketItem[itemId].sold = true;
         _itemsSold.increment();
     }
+
+    function listMarketItems() public view returns (MarketItem[] memory) {
+        uint itemCount = _itemIds.current();
+        uint unsoldItemCount = _itemIds.current() - _itemsSold.current();
+        uint currentIndex = 0;
+
+        MarketItem[] memory items = new MarketItem[](unsoldItemCount);
+        for (uint i = 0; i < itemCount; i++) {
+            if (idToMarketItem[i + 1].owner == address(0)) {
+                uint currentId = i + 1;
+                MarketItem storage currentItem = idToMarketItem[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+   
+        return items;
+    }
+
+    function listMyNFTs() public view returns (MarketItem[] memory) {
+        uint totalItemCount = _itemIds.current();
+        uint itemCount = 0;
+        uint currentIndex = 0;
+
+        for (uint i = 0; i < totalItemCount; i++) {
+            if (idToMarketItem[i + 1].owner == msg.sender || idToMarketItem[i + 1].seller == msg.sender) {
+                itemCount += 1;
+            }
+        }
+
+        MarketItem[] memory items = new MarketItem[](itemCount);
+        for (uint i = 0; i < totalItemCount; i++) {
+            //if (idToMarketItem[i + 1].owner == msg.sender) {
+            if (idToMarketItem[i + 1].owner == msg.sender || idToMarketItem[i + 1].seller == msg.sender) {
+                uint currentId = i + 1;
+                MarketItem storage currentItem = idToMarketItem[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+    
+        return items;
+    }
+
 
 }

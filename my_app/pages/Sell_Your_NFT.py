@@ -45,7 +45,7 @@ def load_contract(abi_file, contract_address):
 
 
 # Load the contract
-contract_1 = load_contract(abi_file_list[0],contract_address_list[0])
+#contract_1 = load_contract(abi_file_list[0],contract_address_list[0])
 contract_2 = load_contract(abi_file_list[1],contract_address_list[1])
 
 
@@ -56,7 +56,7 @@ contract_2 = load_contract(abi_file_list[1],contract_address_list[1])
 st.title("Sell Your NFT")
 account = st.text_input("Enter your wallet address")
 
-contract_address = os.getenv(contract_address_list[0])
+#contract_address = os.getenv(contract_address_list[0])
 
 token_id = st.text_input("What's your token ID?")
 
@@ -68,12 +68,20 @@ price = st.text_input("How much ETH do you wish to list your NFT for? Enter the 
 
 if st.button("Sell"):
     # Get the art token's URI
-    contract_address = contract_address_list[0]
-    
-    list_item = contract_2.functions.addMarketItem(str(contract_address), int(token_id), int(price)).transact({'from': account, 'gas': 1000000})
+    contract_address = os.getenv(contract_address_list[0])
+    st.write(contract_address)
+    #contract_2.functions.addMarketItem(str(contract_address), int(token_id), int(price), account).call({'from': account})
+    contract_2.functions.addMarketItem(str(contract_address), int(token_id), int(price)).transact({'from': account, 'gas': 1000000})
 
-
-    receipt = w3.eth.waitForTransactionReceipt(list_item)
-    st.write("Transaction receipt mined:")
-    st.write(dict(receipt))
+    #receipt = w3.eth.waitForTransactionReceipt(list_item)
+    #st.write("Transaction receipt mined:")
+    #st.write(dict(receipt))
 st.markdown("---")
+
+
+marketItem = st.text_input("What's your MarketItem number?")
+
+if st.button("get MarketItem"):
+
+    marketItem_info = contract_2.functions.getMarketItem(int(marketItem)).call()
+    st.write(marketItem_info)
