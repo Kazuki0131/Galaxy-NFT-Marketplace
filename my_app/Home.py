@@ -34,3 +34,4 @@ st.image(image, caption='Galaxy NFT Marketplace')
 st.markdown("# Welcome to Galaxy NFT Marketplace, your one-stop shop for all of your non-fungible token needs!")
 
 st.markdown("### Galaxy NFT Marketplace aims to make the entire NFT process simple and fun! From the beginning minting process, to listing and selling your NFT, and also exploring the marketplace and buying other popular NFTs, Galaxy NFT Marketplace is your one-stop shop!")
+ ###
