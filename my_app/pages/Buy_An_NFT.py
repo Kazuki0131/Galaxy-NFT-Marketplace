@@ -54,12 +54,48 @@ contract_2 = load_contract(abi_file_list[1],contract_address_list[1])
 # List NFTs
 ################################################################################
 NFTs_info = contract_2.functions.listMarketItems().call()
+#st.write(len(NFTs_info))
+
+item_counter = 0
+
+st.title("NFT Market")
 
  # NFT info: 00. itemId, 01. nftContract, 02. tokenId; 03. owner; 04. seller; 05. price; 06. sold;
-token_uri = contract_1.functions.tokenURI(NFTs_info[0][2]).call()
-#st.write(token_uri)
-st.image(token_uri)
-st.write("Item ID:")
-st.write(NFTs_info[0][0])
-st.write("Price:")
-st.write(NFTs_info[0][5])
+
+while item_counter < len(NFTs_info):
+    cols = st.columns(2)
+    if NFTs_info[item_counter][6] == True:
+        item_counter += 1
+    else:
+        cols[0].image(contract_1.functions.tokenURI(NFTs_info[item_counter][2]).call(), use_column_width="always")
+        cols[0].write("Item ID")
+        cols[0].write(NFTs_info[item_counter][0])
+        cols[0].write("Price")
+        cols[0].write(NFTs_info[item_counter][5])
+        item_counter += 1
+        if item_counter < len(NFTs_info):
+            if NFTs_info[item_counter][6] == True:
+                item_counter += 1
+            else:
+                cols[1].image(contract_1.functions.tokenURI(NFTs_info[item_counter][2]).call(),use_column_width="always")
+                cols[1].write("Item ID")
+                cols[1].write(NFTs_info[item_counter][0])
+                cols[1].write("Price")
+                cols[1].write(NFTs_info[item_counter][5])
+                item_counter += 1
+        else:
+            break
+st.markdown("---")
+
+################################################################################
+# Purchase NFT
+################################################################################
+NFT_contract_address = os.getenv(contract_address_list[0])
+
+st.title("Buy NFT")
+account = st.text_input("Enter your wallet address")
+item_id = st.text_input("What's your item ID?")
+price = st.text_input("The price:")
+
+if st.button("Buy"):
+    contract_2.functions.createMarketSale(str(NFT_contract_address), int(item_id)).transact({'from':account, 'gas':1000000, 'value': int(price)})

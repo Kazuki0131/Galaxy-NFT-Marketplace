@@ -71,7 +71,7 @@ contract GalaxyArtMarket {
             payable(msg.sender),
             //payable(_sender),
             price,
-            false,
+            false
         );
 
     IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
