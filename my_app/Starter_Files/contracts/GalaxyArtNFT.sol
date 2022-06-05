@@ -78,7 +78,7 @@ contract GalaxyArtMarket {
     //IERC721(nftContract).transferFrom(_sender, address(this), tokenId);
     }
 
-    function createMarketSale(address nftContract, uint256 itemId) public payable{
+    function createMarketSale(address nftContract, uint256 itemId) public payable returns(MarketItem memory){
         uint price = idToMarketItem[itemId].price;
         uint tokenId = idToMarketItem[itemId].tokenId;
         require(msg.value == price, "Please submit the asking price in order to complete the purchase");
@@ -88,6 +88,8 @@ contract GalaxyArtMarket {
         idToMarketItem[itemId].owner = payable(msg.sender);
         idToMarketItem[itemId].sold = true;
         _itemsSold.increment();
+
+        return idToMarketItem[itemId];
     }
 
     function listMarketItems() public view returns (MarketItem[] memory) {
