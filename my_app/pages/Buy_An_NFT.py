@@ -99,3 +99,4 @@ price = st.text_input("The price:")
 
 if st.button("Buy"):
     contract_2.functions.createMarketSale(str(NFT_contract_address), int(item_id)).transact({'from':account, 'gas':1000000, 'value': int(price)})
+    st.write("Your transaction is complete!")

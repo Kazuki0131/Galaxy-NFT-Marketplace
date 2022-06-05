@@ -17,6 +17,10 @@ def page4():
     st.markdown("# Buy An NFT")
     st.sidebar.markdown("# Buy An NFT")
 
+def page5():
+    st.markdown("# Your NFT Collection")
+    st.sidebar.markdown("# Your NFT Collection")
+
 st.markdown("# Home")
 st.sidebar.markdown("# Home")
 
