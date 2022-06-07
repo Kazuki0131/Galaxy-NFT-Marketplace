@@ -44,8 +44,7 @@ def load_contract(abi_file, contract_address):
     return contract
 
 
-# Load the contract
-#contract_1 = load_contract(abi_file_list[0],contract_address_list[0])
+# Load the contract (GalaxyArtMarket contract)
 contract_2 = load_contract(abi_file_list[1],contract_address_list[1])
 
 
@@ -56,32 +55,36 @@ contract_2 = load_contract(abi_file_list[1],contract_address_list[1])
 st.title("Sell Your NFT")
 account = st.text_input("Enter your wallet address")
 
-#contract_address = os.getenv(contract_address_list[0])
-
 token_id = st.text_input("What's your token ID?")
 
 price = st.text_input("How much ETH do you wish to list your NFT for? Enter the price in Wei.")
 
 
-#if st.button("Get Market Item"):
-    #get_item = contract_2.functions.getMarketItem(token_id)
-
 if st.button("Sell"):
     # Get the art token's URI
     contract_address = os.getenv(contract_address_list[0])
     st.write(contract_address)
-    #contract_2.functions.addMarketItem(str(contract_address), int(token_id), int(price), account).call({'from': account})
+    #Get the NFT information
+    NFT_info = contract_2.functions.addMarketItem(str(contract_address), int(token_id), int(price)).call({'from': account})
+    
+    #add NFT into marketplace
     contract_2.functions.addMarketItem(str(contract_address), int(token_id), int(price)).transact({'from': account, 'gas': 1000000})
-
-    #receipt = w3.eth.waitForTransactionReceipt(list_item)
-    #st.write("Transaction receipt mined:")
-    #st.write(dict(receipt))
+    
+    #show the Item ID
+    st.write(f"Item ID: {NFT_info[0]}")
+    
 st.markdown("---")
-
-
-marketItem = st.text_input("What's your MarketItem number?")
+st.markdown("### Get NFT information")
+marketItem = st.text_input("What's your Item ID?")
 
 if st.button("get MarketItem"):
-
+    #call getMarketItem function to check the information of the selected MarketItem
+    #The function will return a tuple (# NFT info: itemId, nftContract address, tokenId, owner address, seller address price, bool sold)
     marketItem_info = contract_2.functions.getMarketItem(int(marketItem)).call()
-    st.write(marketItem_info)
+    # NFT info: 00. itemId, 01. nftContract, 02. tokenId; 03. owner; 04. seller; 05. price; 06. sold;
+    st.markdown("#### NFT information:")
+    st.write(f"Item ID:       {marketItem_info[0]}")
+    st.write(f"NFT contract:  {marketItem_info[1]}")
+    st.write(f"Token ID:      {marketItem_info[2]}")
+    st.write(f"Seller:        {marketItem_info[4]}")
+    st.write(f"Price:         {marketItem_info[5]}")
