@@ -60,31 +60,31 @@ item_counter = 0
 
 st.title("NFT Market")
 
- # NFT info: 00. itemId, 01. nftContract, 02. tokenId; 03. owner; 04. seller; 05. price; 06. sold;
+item_index ={}
 
+# NFT info: 00. itemId, 01. nftContract, 02. tokenId; 03. owner; 04. seller; 05. price; 06. sold;
+#show the NFTs available for sale
 while item_counter < len(NFTs_info):
     cols = st.columns(2)
-    if NFTs_info[item_counter][6] == True:
+    cols[0].image(contract_1.functions.tokenURI(NFTs_info[item_counter][2]).call(), use_column_width="always")
+    cols[0].write("Item ID")
+    cols[0].write(NFTs_info[item_counter][0])
+    cols[0].write("Price")
+    cols[0].write(NFTs_info[item_counter][5])
+    item_index[NFTs_info[item_counter][0]] = item_counter
+    item_counter += 1
+    if item_counter < len(NFTs_info):
+        cols[1].image(contract_1.functions.tokenURI(NFTs_info[item_counter][2]).call(),use_column_width="always")
+        cols[1].write("Item ID")
+        cols[1].write(NFTs_info[item_counter][0])
+        cols[1].write("Price")
+        cols[1].write(NFTs_info[item_counter][5])
+        item_index[NFTs_info[item_counter][0]] = item_counter
         item_counter += 1
     else:
-        cols[0].image(contract_1.functions.tokenURI(NFTs_info[item_counter][2]).call(), use_column_width="always")
-        cols[0].write("Item ID")
-        cols[0].write(NFTs_info[item_counter][0])
-        cols[0].write("Price")
-        cols[0].write(NFTs_info[item_counter][5])
-        item_counter += 1
-        if item_counter < len(NFTs_info):
-            if NFTs_info[item_counter][6] == True:
-                item_counter += 1
-            else:
-                cols[1].image(contract_1.functions.tokenURI(NFTs_info[item_counter][2]).call(),use_column_width="always")
-                cols[1].write("Item ID")
-                cols[1].write(NFTs_info[item_counter][0])
-                cols[1].write("Price")
-                cols[1].write(NFTs_info[item_counter][5])
-                item_counter += 1
-        else:
-            break
+        break
+
+
 st.markdown("---")
 
 ################################################################################
@@ -94,10 +94,16 @@ NFT_contract_address = os.getenv(contract_address_list[0])
 
 st.title("Buy NFT")
 account = st.text_input("Enter your wallet address")
-item_id = st.text_input("What's your item ID?")
-price = st.text_input("The price:")
+item_id = st.text_input("Enter the item ID that you are going to buy")
 
 if st.button("Buy"):
-    NFT_info = contract_2.functions.createMarketSale(str(NFT_contract_address), int(item_id)).transact({'from':account, 'gas':1000000, 'value': int(price)})
-    st.write("Your transaction is complete!")
-    st.write(NFT_info)
+    balance = w3.eth.get_balance(account)
+    price = NFTs_info[item_index[int(item_id)]][5]
+    
+    if balance >= price:
+        #execute the sale transaction
+        NFT_info = contract_2.functions.createMarketSale(str(NFT_contract_address), int(item_id)).transact({'from':account, 'gas':1000000, 'value': int(price)})
+        st.write("Your transaction is complete!")
+        
+    else:
+        st.write("Your balance is not enough.")

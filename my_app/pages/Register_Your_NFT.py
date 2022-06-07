@@ -59,10 +59,12 @@ st.title("Register New Artwork")
 account = st.text_input("Enter your wallet address")
 artwork_uri = st.text_input("Enter your image URI")
 if st.button("Register Artwork"):
+    tokenId = contract_1.functions.createToken(account, artwork_uri).call({'from': account})
     tx_hash = contract_1.functions.createToken(account, artwork_uri).transact({'from': account, 'gas': 1000000})
     receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     st.write("Transaction receipt mined:")
     st.write(dict(receipt))
+    st.write(f"Token ID: {tokenId}")
 
 st.markdown("---")
 

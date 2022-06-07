@@ -68,15 +68,15 @@ if st.button("Display my NFT Collection!"):
         cols[0].write("Price")
         cols[0].write(NFTs_info[item_counter][5])
         item_counter += 1
-        if item_counter >= len(NFTs_info):
-            break
-        else:
+        if item_counter < len(NFTs_info):
             cols[1].image(contract_1.functions.tokenURI(NFTs_info[item_counter][2]).call(),use_column_width="always")
             cols[1].write("Item ID")
             cols[1].write(NFTs_info[item_counter][0])
             cols[1].write("Price")
             cols[1].write(NFTs_info[item_counter][5])
             item_counter += 1
+        else:
+            break
 st.markdown("---")
 
 
